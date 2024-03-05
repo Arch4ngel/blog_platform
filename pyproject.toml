@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "blog-platform"
+version = "0.1.0"
+description = ""
+authors = ["Arch4ngel <mishacool4@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.0.3"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.9"
+requests = "^2.31.0"
+pytils = "^0.4.1"
+pillow = "^10.2.0"
+redis = "^5.0.2"
+stripe = "^8.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
