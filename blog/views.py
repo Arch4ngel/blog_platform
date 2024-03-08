@@ -1,13 +1,14 @@
-from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from pytils.translit import slugify
 
 from blog.forms import PostForm, PaymentForm
 from blog.models import Post, Payment
-from pytils.translit import slugify
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from blog.services import check_payment
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -33,7 +34,7 @@ class PostListView(ListView):
     paginate_by = 3
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     # permission_required = 'blog.view_post'
 
@@ -46,11 +47,21 @@ class PostDetailView(DetailView):
         context['title'] = post.title
         return context
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        if self.object.is_private and not self.request.user.is_subscribed:
-            raise Http404("Для просмотра данного поста необходима подписка")
-        return self.object
+    # def get_object(self, queryset=None):
+    #     self.object = super().get_object(queryset)
+    #     if self.object.is_private and not self.request.user.is_subscribed:
+    #         raise Http404("Для просмотра данного поста необходима подписка")
+    #     return self.object
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.is_private and not request.user.is_subscribed:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    def handle_no_permission(self):
+        redirect_url = reverse_lazy('blog:subscription')
+        return HttpResponseRedirect(redirect_url)
 
 
 class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
@@ -88,13 +99,6 @@ class ContactsPageView(View):
         context = {'title': 'Контакты'}
         return render(request, 'blog/contacts.html', context)
 
-
-class PaymentCreateView(LoginRequiredMixin, CreateView):
-    model = Payment
-    form_class = PaymentForm
-    success_url = reverse_lazy('blog:blog')
-    extra_context = {'title': 'Оформить подписку'}
-
     def form_valid(self, form):
         if form.is_valid():
             self.object = form.save()
@@ -107,3 +111,10 @@ class SubscriptionPageView(LoginRequiredMixin, View):
     def get(self, request):
         context = {'title': 'Подписка'}
         return render(request, 'blog/subscription.html', context)
+
+
+class SubscriptionSuccessPageView(LoginRequiredMixin, View):
+    def get(self, request):
+        check_payment(request.user)
+        context = {'title': 'Подписка'}
+        return render(request, 'blog/subscription_success.html', context)

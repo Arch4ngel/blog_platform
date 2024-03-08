@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
+from blog.services import check_payment
 from users.apps import UsersConfig
 from users.services import generate_new_password
 from users.views import *

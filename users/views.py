@@ -44,6 +44,7 @@ class VerificationTemplateView(TemplateView):
 
         if user_code is not None and user_code.ver_code == ver_code:
             user_code.is_active = True
+            user_code.phone_verified = True
             user_code.save()
             return redirect('users:login')
         else:

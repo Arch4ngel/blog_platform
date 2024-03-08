@@ -156,3 +156,5 @@ if CACHE_ENABLED:
             "TIMEOUT": 300  # Ручная регулировка времени жизни кеша в секундах, по умолчанию 300
         }
     }
+
+STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')

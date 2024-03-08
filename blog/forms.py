@@ -12,8 +12,4 @@ class PostForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = ['amount']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['amount'].widget = forms.Select
+        fields = '__all__'

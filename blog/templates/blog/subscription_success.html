@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+{% if user.is_subscribed %}
+<div class="row mb-6">
+    <h2>
+        Подписка успешно активирована!
+    </h2>
+{% else %}
+    <h2>
+        Ошибка при оплате, попробуйте повторить позднее или свяжитесь с поддержкой
+    </h2>
+{% endif %}
+</div>
+{% endblock %}

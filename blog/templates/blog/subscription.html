@@ -1,8 +1,24 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 {% if user.is_subscribed %}
-
+<div class="row mb-6">
+    <h2>
+        Cтатус подписки: Активна
+    </h2>
 {% else %}
+    <h2>
+        Cтатус подписки: Неактивна
+    </h2>
 
+    <script async
+      src="https://js.stripe.com/v3/buy-button.js">
+    </script>
+
+    <stripe-buy-button
+      buy-button-id="buy_btn_1OrpPAEdOFuxmXJOt8SkBmGi"
+      publishable-key="pk_test_51OjJqVEdOFuxmXJO299ZrmR44jwhwhghelX1dfN3DyLhAoLTLfvG1rjbNJuKhGCYvvxZbgcnhtBXRqKQqttsy8d700R8qJ3RG7"
+    >
+    </stripe-buy-button>
 {% endif %}
+</div>
 {% endblock %}

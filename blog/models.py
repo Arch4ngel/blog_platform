@@ -30,10 +30,10 @@ class Payment(models.Model):
                              **NULLABLE)
     transaction_id = models.TextField(verbose_name='Идентификатор платежа', **NULLABLE)
     dateime = models.DateTimeField(auto_now_add=True, verbose_name='Время платежа')
-    amount = models.PositiveIntegerField(verbose_name='Сумма', choices=[(100, 'Сто рублей')], default=100)
+    amount = models.PositiveIntegerField(verbose_name='Сумма', default=100)
 
     def __str__(self):
-        return f'{self.user}-{self.dateime}'
+        return f'{self.user}'
 
     class Meta:
         verbose_name = 'Платёж'
