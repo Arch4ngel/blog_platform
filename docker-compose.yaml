@@ -33,7 +33,7 @@ services:
       sh -c "sleep 3 &&  python manage.py makemigrations 
       && python manage.py migrate 
       && python manage.py csu
-      && python manage.py runserver 0.0.0.0:8000
+      && python manage.py runserver 0.0.0.0:8000"
     expose:
       - 8000
     ports:
