@@ -29,6 +29,8 @@ services:
     tty: true
     volumes:
       - .:/code
+      - ./static:/static
+      - ./media:/media
     command: >
       sh -c "sleep 3 &&  python manage.py makemigrations 
       && python manage.py migrate 
