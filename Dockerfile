@@ -18,6 +18,9 @@ COPY poetry.lock .
 COPY pyproject.toml .
 RUN poetry install
 
+RUN mkdir ./staticfiles
+RUN mkdir ./mediafiles
+
 COPY . .
 
 ENTRYPOINT python manage.py migrate & python manage.py collectstatic --no-input --clear & python manage.py runserver 0.0.0.0:8000
