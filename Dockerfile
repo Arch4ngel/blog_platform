@@ -24,4 +24,4 @@ COPY . /code
 
 WORKDIR /code
 
-ENTRYPOINT python manage.py migrate & python manage.py runserver 0.0.0.0:8000
+ENTRYPOINT gunicorn -c gunicorn.py config.wsgi
