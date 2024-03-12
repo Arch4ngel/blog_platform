@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
 
-from blog.forms import PostForm, PaymentForm
-from blog.models import Post, Payment
+from blog.forms import PostForm
+from blog.models import Post
 from blog.services import check_payment
 
 
@@ -41,35 +41,34 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
-        # if not self.request.user.is_subscribed and post.is_private
         post.views_count += 1
         post.save()
         context['title'] = post.title
         return context
 
-    # def get_object(self, queryset=None):
-    #     self.object = super().get_object(queryset)
-    #     if self.object.is_private and not self.request.user.is_subscribed:
-    #         raise Http404("Для просмотра данного поста необходима подписка")
-    #     return self.object
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.is_private and not self.request.user.is_subscribed:
+            raise Http404("Для просмотра данного поста необходима подписка")
+        return self.object
 
-    def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
-        if obj.is_private and not request.user.is_subscribed:
-            return self.handle_no_permission()
-        return super().dispatch(request, *args, **kwargs)
+    # def dispatch(self, request, *args, **kwargs):
+    #     obj = self.get_object()
+    #     if obj.is_private and not request.user.is_subscribed:
+    #         return self.handle_no_permission()
+    #     return super().dispatch(request, *args, **kwargs)
+    #
+    # def handle_no_permission(self):
+    #     redirect_url = reverse_lazy('blog:subscription')
+    #     return HttpResponseRedirect(redirect_url)
 
-    def handle_no_permission(self):
-        redirect_url = reverse_lazy('blog:subscription')
-        return HttpResponseRedirect(redirect_url)
 
-
-class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:blog')
     extra_context = {'title': 'Редактировать пост'}
-    permission_required = 'blog.change_post'
+    # permission_required = 'blog.change_post'
 
     def form_valid(self, form):
         if form.is_valid():
@@ -77,6 +76,12 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             new_post.slug = slugify(new_post.title)
             new_post.save()
         return super().form_valid(form)
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.user != self.request.user and not self.request.user.is_staff:
+            raise Http404("Вы не являетесь автором поста")
+        return self.object
 
 
 class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):

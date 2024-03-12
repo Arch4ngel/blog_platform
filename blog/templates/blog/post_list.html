@@ -13,28 +13,43 @@
     line-clamp: 3;
     box-orient: vertical;}
 </style>
-<div class="row mb-4">
+<div class="row mb-1 ms-1">
   <div class="col-12">
        <a class="btn btn-outline-primary" href="{% url 'blog:create' %}">Добавить пост</a>
   </div>
 </div>
-<div class="container">
-  <div class="card-deck mb-3 text-center">
+<div class="container mx-0">
+  <div class="row mb-1 mx-0">
     {% for object in object_list%}
-      <div class="card mb-4 box-shadow">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">{{ object.title }}</h4>
+      <div class="col-md-4">
+          <div class="card mb-4 box-shadow">
+        <div class="row mx-1 mt-3">
+            <div class="col-md-6">
+              <h3 class="mb-0">{{ object.title }}</h3>
+              <ul class="list-unstyled mt-3 mb-4">
+                  <li class="size"> {{ object.body }}</li>
+              </ul>
+            </div>
+            <div class="col-md-6 ">
+                <img class="img-fluid" src="/{% mediapath object.image %}" alt='Some image'/>
+            </div>
         </div>
-        <img src="/{% mediapath object.image %}"/>
-        <div class="card-body">
-          <ul class="list-unstyled mt-3 mb-4">
-            <li class="size"> {{ object.body }}</li>
-          </ul>
-          <h6 class="my-3 font-weight-normal"> Просмотры:{{ object.views_count }}</h6>
-          <a href="{% url 'blog:view' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
-          <a href="{% url 'blog:edit' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-          <a href="{% url 'blog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Удалить</a>
+        <div class="row mx-1 mb-1">
+            <div class="col-md-6 mb-1">
+              <a href="{% url 'blog:view' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+              {% if request.user == object.user or user.is_staff %}
+              <a href="{% url 'blog:edit' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+              <a href="{% url 'blog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Удалить</a>
+              {% endif %}
+            </div>
+            <div class="col-md-6 ">
+                <div class="card box-shadow justify-content-end align-items-center">
+                <h6 class="align-center">Просмотры: {{ object.views_count }}</h6>
+                <h6 class="align-center">Автор: {{ object.user.nickname }}</h6>
+                </div>
+            </div>
         </div>
+    </div>
       </div>
     {% endfor %}
   </div>

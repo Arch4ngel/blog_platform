@@ -1,11 +1,11 @@
 import random
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, TemplateView
+from django.views.generic import CreateView, UpdateView, TemplateView, FormView
 
-from users.forms import UserRegisterForm, UserProfileForm
+from users.forms import UserRegisterForm, UserProfileForm, NewpasswordForm
 from users.models import User
-from users.services import send_text
+from users.services import send_text, generate_new_password
 
 
 # Create your views here.
@@ -53,3 +53,14 @@ class VerificationTemplateView(TemplateView):
 
 class VerificationErrorTemplateView(VerificationTemplateView):
     template_name = 'users/verify_phone_error.html'
+
+
+class ForgotPasswordFormView(FormView):
+    template_name = 'users/password_recovery.html'
+    form_class = NewpasswordForm
+    success_url = reverse_lazy('users:login')
+
+    def form_valid(self, form):
+        phone = form.cleaned_data['phone']
+        generate_new_password(phone)
+        return super().form_valid(form)

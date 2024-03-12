@@ -15,5 +15,5 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('verify_phone/', VerificationTemplateView.as_view(), name='verify_phone'),
     path('verify_phone_error/', VerificationErrorTemplateView.as_view(), name='verify_phone_error'),
-    path('profile/genpassword/', generate_new_password, name='generate_new_password'),
+    path('password_recovery/', ForgotPasswordFormView.as_view(), name='password_recovery'),
 ]
