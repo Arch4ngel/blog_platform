@@ -19,4 +19,4 @@ RUN poetry install
 
 COPY . .
 
-ENTRYPOINT python manage.py migrate & python manage.py runserver 0.0.0.0:8000
+ENTRYPOINT python3 manage.py migrate & python3 manage.py runserver 0.0.0.0:8000
