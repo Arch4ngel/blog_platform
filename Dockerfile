@@ -24,4 +24,4 @@ COPY . /code
 
 WORKDIR /code
 
-ENTRYPOINT gunicorn -c gunicorn.py config.wsgi
+ENTRYPOINT gunicorn -c config.gunicorn.py config.wsgi
