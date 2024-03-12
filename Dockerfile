@@ -24,6 +24,6 @@ ENV APP_HOME=/home/app/web
 RUN mkdir -p $APP_HOME
 RUN mkdir -p $APP_HOME/static
 RUN mkdir -p $APP_HOME/media
-WORKDIR $APP_HOME
+#WORKDIR $APP_HOME
 
 ENTRYPOINT python code/manage.py migrate & python code/manage.py csu & python code/manage.py runserver 0.0.0.0:8000
