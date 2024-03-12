@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '84.201.173.84']
 
@@ -160,3 +160,4 @@ if CACHE_ENABLED:
     }
 
 STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
+CSRF_TRUSTED_ORIGINS = ["http://localhost:80"]
