@@ -14,6 +14,7 @@ class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
     success_url = reverse_lazy('users:verify_phone')
+    extra_context = {'title': 'Зарегистрироваться'}
 
     def form_valid(self, form):
         if form.is_valid():
@@ -30,6 +31,7 @@ class ProfileView(UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
+    extra_context = {'title': 'Профиль'}
 
     def get_object(self, queryset=None):
         return self.request.user
