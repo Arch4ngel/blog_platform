@@ -26,4 +26,4 @@ RUN mkdir -p $APP_HOME/static
 RUN mkdir -p $APP_HOME/media
 #WORKDIR $APP_HOME
 
-ENTRYPOINT python code/manage.py migrate & python code/manage.py csu & python code/manage.py runserver 0.0.0.0:8000
+ENTRYPOINT python manage.py migrate & python manage.py csu & python manage.py runserver 0.0.0.0:8000
