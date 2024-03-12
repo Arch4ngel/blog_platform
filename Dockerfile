@@ -1,5 +1,5 @@
 FROM python:3.12
-WORKDIR ./
+WORKDIR /code
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -19,8 +19,5 @@ COPY pyproject.toml .
 RUN poetry install
 
 COPY . .
-
-RUN mkdir -p /static
-RUN mkdir -p /media
 
 ENTRYPOINT python manage.py migrate & python manage.py collectstatic --no-input --clear & python manage.py runserver 0.0.0.0:8000
