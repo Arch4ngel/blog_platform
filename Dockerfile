@@ -27,4 +27,4 @@ COPY . .
 #RUN mkdir -p $APP_HOME/media
 #WORKDIR $APP_HOME
 
-ENTRYPOINT python manage.py migrate & python manage.py runserver 0.0.0.0:8000 & python manage.py collectstatic --no-input
+ENTRYPOINT python manage.py migrate & python manage.py runserver 0.0.0.0:8000
