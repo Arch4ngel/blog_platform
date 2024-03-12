@@ -19,8 +19,8 @@ RUN poetry install
 
 COPY . .
 
-ENV HOME=/code/app
-ENV APP_HOME=/code/app/web
+ENV HOME=./app
+ENV APP_HOME=./app/web
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/static
 RUN mkdir $APP_HOME/media
