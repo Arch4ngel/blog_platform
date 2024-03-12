@@ -49,8 +49,8 @@ services:
     restart: always
     container_name: nginx
     volumes:
-      - static_volume:./staticfiles
-      - media_volume:./mediafiles
+      - static_volume:/code/staticfiles
+      - media_volume:/code/mediafiles
     expose:
       - 8080
     ports:
