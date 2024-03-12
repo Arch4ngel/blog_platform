@@ -20,11 +20,7 @@ RUN poetry install
 
 COPY . .
 
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
-RUN mkdir -p $APP_HOME
-RUN mkdir -p $APP_HOME/static
-RUN mkdir -p $APP_HOME/media
-#WORKDIR $APP_HOME
+RUN mkdir -p /static
+RUN mkdir -p /media
 
 ENTRYPOINT python manage.py migrate & python manage.py collectstatic --no-input --clear & python manage.py runserver 0.0.0.0:8000
