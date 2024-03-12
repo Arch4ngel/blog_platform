@@ -29,6 +29,8 @@ services:
     tty: true
     volumes:
       - .:/code
+      - ./static:/code/staticfiles
+      - ./media:/code/mediafiles
     command: "gunicorn -c gunicorn.py config.wsgi"
     expose:
       - 8000
