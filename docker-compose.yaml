@@ -29,9 +29,6 @@ services:
     tty: true
     volumes:
       - .:/code
-      - ./static:/code/staticfiles
-      - ./media:/code/mediafiles
-      - ./nginx:/etc/nginx/conf.d
     command: >
       sh -c "sleep 3 &&  python manage.py makemigrations 
       && python manage.py migrate 
