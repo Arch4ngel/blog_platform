@@ -1,5 +1,4 @@
 FROM python:3.12
-WORKDIR /code
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -21,6 +20,8 @@ RUN poetry install
 RUN mkdir ./staticfiles
 RUN mkdir ./mediafiles
 
-COPY . .
+COPY . /code
 
-ENTRYPOINT python manage.py migrate & python manage.py collectstatic --no-input --clear & python manage.py runserver 0.0.0.0:8000
+WORKDIR /code
+
+ENTRYPOINT python manage.py migrate & python manage.py runserver 0.0.0.0:8000
