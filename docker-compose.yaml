@@ -33,8 +33,8 @@ services:
       && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
-      - ./static:/home/app/web/static
-      - ./media:/home/app/web/media
+      - ./static:/code/app/web/static
+      - ./media:/code/app/web/media
     expose:
       - '8000'
     depends_on:
@@ -46,8 +46,8 @@ services:
     build: ./nginx
     container_name: nginx
     volumes:
-      - ./static:/home/app/web/static
-      - ./media:/home/app/web/media
+      - ./static:/code/app/web/static
+      - ./media:/code/app/web/media
     ports:
       - "80:8080"
     depends_on:
