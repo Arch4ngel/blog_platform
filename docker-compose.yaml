@@ -29,8 +29,8 @@ services:
     tty: true
     volumes:
       - .:/code
-      - static_volume:/home/app/web/static
-      - media_volume:/home/app/web/media
+      - ./static:/home/app/web/static
+      - ./media:/home/app/web/media
     command: >
       sh -c "sleep 3 &&  python manage.py makemigrations 
       && python manage.py migrate 
@@ -49,8 +49,8 @@ services:
     build: ./nginx
     container_name: nginx
     volumes:
-      - static_volume:/home/app/web/static
-      - media_volume:/home/app/web/media
+      - ./static:/home/app/web/static
+      - ./media:/home/app/web/media
     expose:
       - 8080
     ports:
@@ -58,6 +58,6 @@ services:
     depends_on:
       - app
 volumes:
-  static_volume:
-  media_volume:
+  static:
+  media:
   pg_data:
