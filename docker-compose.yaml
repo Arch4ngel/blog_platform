@@ -29,8 +29,8 @@ services:
     tty: true
     volumes:
       - .:/code
-      - ./static:/code/staticfiles
-      - ./media:/code/mediafiles
+      - ./static:/code/static
+      - ./media:/code/media
     command: "gunicorn -c gunicorn.py config.wsgi"
     expose:
       - 8000
@@ -45,8 +45,8 @@ services:
     restart: always
     container_name: nginx
     volumes:
-      - ./static:/code/staticfiles
-      - ./media:/code/mediafiles
+      - ./static:/code/static
+      - ./media:/code/media
       - ./nginx:/etc/nginx/conf.d
     expose:
       - 8080
