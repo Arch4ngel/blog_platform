@@ -6,6 +6,7 @@ from users.models import User
 
 
 class UserLoginForm(AuthenticationForm):
+    """Форма входа в систему"""
     class Meta:
         model = User
         fields = ['phone', 'password']
@@ -18,6 +19,7 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
+    """Форма регистрации пользователя"""
     class Meta:
         model = User
         fields = ['phone', 'nickname', 'password1', 'password2']
@@ -29,6 +31,7 @@ class UserRegisterForm(UserCreationForm):
             field.widget.attrs['class'] = 'form-control'
 
     def clean_phone(self):
+        """Проверка корректности номера"""
         cleaned_data = self.cleaned_data.get('phone')
         if not cleaned_data[0] == '7' or len(cleaned_data) != 11:
             raise ValidationError("Введите корректный номер!")
@@ -36,6 +39,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 class UserProfileForm(UserChangeForm):
+    """Форма редактирования профиля"""
     class Meta:
         model = User
         fields = ['nickname']
@@ -48,6 +52,7 @@ class UserProfileForm(UserChangeForm):
 
 
 class NewpasswordForm(forms.Form):
+    """Форма восстановления пароля"""
     phone = forms.CharField(label='Номер телефона', widget=forms.TextInput(attrs={'placeholder': '7999...'}))
 
     def __init__(self, *args, **kwargs):
@@ -56,6 +61,7 @@ class NewpasswordForm(forms.Form):
             field.widget.attrs['class'] = 'form-control'
 
     def clean_phone(self):
+        """Проверка существования пользователя"""
         cleaned_data = self.cleaned_data.get('phone')
         if not User.objects.filter(phone=cleaned_data):
             raise ValidationError("Пользователь не найден!")

@@ -5,6 +5,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Post(models.Model):
+    """Модель поста"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Пользователь',
                              **NULLABLE)
 
@@ -26,7 +27,7 @@ class Post(models.Model):
 
 
 class Payment(models.Model):
-
+    """Модель платежа за подписку"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='Пользователь',
                              **NULLABLE)
     transaction_id = models.TextField(verbose_name='Идентификатор платежа', **NULLABLE)

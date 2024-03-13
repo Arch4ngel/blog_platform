@@ -12,6 +12,7 @@ from blog.services import check_payment
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
+    """Представление для создания поста"""
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:blog')
@@ -20,6 +21,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     }
 
     def form_valid(self, form):
+        """Добавляем пользователя к экземпляру поста"""
         if form.is_valid():
             self.object = form.save()
             self.object.slug = slugify(self.object.title)
@@ -29,16 +31,19 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostListView(ListView):
+    """Представление cписка постов"""
     model = Post
     extra_context = {'title': 'Блог'}
     paginate_by = 3
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):
+    """Представление деталей поста"""
     model = Post
     # permission_required = 'blog.view_post'
 
     def get_context_data(self, **kwargs):
+        """Добавляем +1 просмотр"""
         context = super().get_context_data(**kwargs)
         post = self.get_object()
         post.views_count += 1
@@ -47,6 +52,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         return context
 
     def get_object(self, queryset=None):
+        """Проверка наличия подписки для платного поста"""
         self.object = super().get_object(queryset)
         if self.object.is_private and not self.request.user.is_subscribed:
             raise Http404("Для просмотра данного поста необходима подписка")
@@ -64,6 +70,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
+    """Представление редактирования поста"""
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:blog')
@@ -78,13 +85,15 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_object(self, queryset=None):
+        """Проверка права редактирования поста (только для авторов и модераторов)"""
         self.object = super().get_object(queryset)
         if self.object.user != self.request.user and not self.request.user.is_staff:
-            raise Http404("Вы не являетесь автором поста")
+            raise Http404("Вы не являетесь автором поста или модератором")
         return self.object
 
 
 class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    """Представление удаления поста"""
     model = Post
     extra_context = {'title': 'Удалить пост'}
     success_url = reverse_lazy('blog:blog')
@@ -92,6 +101,7 @@ class PostDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 
 class ContactsPageView(View):
+    """Представление контактов и обратной связи"""
     def get(self, request):
         context = {'title': 'Контакты'}
         return render(request, 'blog/contacts.html', context)
@@ -104,21 +114,16 @@ class ContactsPageView(View):
         context = {'title': 'Контакты'}
         return render(request, 'blog/contacts.html', context)
 
-    def form_valid(self, form):
-        if form.is_valid():
-            self.object = form.save()
-            self.object.user = self.request.user
-            self.object.save()
-        return super().form_valid(form)
-
 
 class SubscriptionPageView(LoginRequiredMixin, View):
+    """Представление страницы с подпиской"""
     def get(self, request):
         context = {'title': 'Подписка'}
         return render(request, 'blog/subscription.html', context)
 
 
 class SubscriptionSuccessPageView(LoginRequiredMixin, View):
+    """Представление страницы с подпиской после оплаты"""
     def get(self, request):
         check_payment(request.user)
         context = {'title': 'Подписка'}

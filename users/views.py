@@ -10,6 +10,7 @@ from users.services import send_text, generate_new_password
 
 # Create your views here.
 class RegisterView(CreateView):
+    """Пркдставление регистрации пользователя"""
     model = User
     form_class = UserRegisterForm
     template_name = 'users/register.html'
@@ -17,6 +18,7 @@ class RegisterView(CreateView):
     extra_context = {'title': 'Зарегистрироваться'}
 
     def form_valid(self, form):
+        """Отправка и проверка кода подтверждения"""
         if form.is_valid():
             new_user = form.save()
             new_user.ver_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
@@ -28,6 +30,7 @@ class RegisterView(CreateView):
 
 
 class ProfileView(UpdateView):
+    """Представление редактирования профиля"""
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('blog:blog')
@@ -38,6 +41,7 @@ class ProfileView(UpdateView):
 
 
 class VerificationTemplateView(TemplateView):
+    """Представление верификации телефона"""
     template_name = 'users/verify_phone.html'
 
     def post(self, request):
@@ -54,10 +58,12 @@ class VerificationTemplateView(TemplateView):
 
 
 class VerificationErrorTemplateView(VerificationTemplateView):
+    """Представление ошибки верификации телефона"""
     template_name = 'users/verify_phone_error.html'
 
 
 class ForgotPasswordFormView(FormView):
+    """Представление сброса парля"""
     template_name = 'users/password_recovery.html'
     form_class = NewpasswordForm
     success_url = reverse_lazy('users:login')

@@ -1,9 +1,10 @@
 from django import forms
 
-from blog.models import Post, Payment
+from blog.models import Post
 
 
 class PostForm(forms.ModelForm):
+    """Форма поста, для создания и редактирования"""
     class Meta:
         model = Post
         fields = ['title', 'body', 'image', 'is_private']

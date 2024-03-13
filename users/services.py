@@ -7,11 +7,13 @@ from users.models import User
 
 
 def send_text(phone, message):
+    """Функция для отправки СМС"""
     response = requests.post(settings.SMS_API_URL, json={'number': phone, 'text': message, 'sign': 'SMS Aero'})
     return response
 
 
 def generate_new_password(phone):
+    """Создание нового пароля"""
     try:
         user = User.objects.get(phone=phone)
         new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
