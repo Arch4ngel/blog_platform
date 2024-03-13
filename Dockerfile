@@ -35,7 +35,7 @@ COPY pyproject.toml .
 RUN poetry install
 
 # copy entrypoint.sh
-COPY ./entrypoint.prod.sh .
+COPY ./entrypoint.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.sh
 RUN chmod +x  $APP_HOME/entrypoint.sh
 
