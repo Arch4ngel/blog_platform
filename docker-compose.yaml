@@ -7,8 +7,8 @@ services:
     command: "gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
 #      - ./:/usr/src/app/
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
     env_file:
       - ./.env
     depends_on:
@@ -43,8 +43,8 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - static_volume:/home/app/web/staticfiles
-      - media_volume:/home/app/web/mediafiles
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
     expose:
       - 8080
     ports:
