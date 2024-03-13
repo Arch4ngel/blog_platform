@@ -17,6 +17,7 @@ redis = "^5.0.2"
 stripe = "^8.5.0"
 gunicorn = "^21.2.0"
 gevent = "^24.2.1"
+coverage = "^7.4.3"
 
 
 [build-system]
