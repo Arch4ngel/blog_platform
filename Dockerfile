@@ -48,6 +48,8 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
+RUN python manage.py collectstatic --noinput
+
 # run entrypoint.sh
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
 
