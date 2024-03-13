@@ -5,7 +5,8 @@ FROM python:3.12
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup -S app && adduser -S app -G app
+RUN addgroup app
+RUN useradd -g app app
 
 # create the appropriate directories
 ENV HOME=/home/app
