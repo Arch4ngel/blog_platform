@@ -8,8 +8,14 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'body', 'image', 'is_private']
 
+    def __init__(self, request=None, *args, **kwargs):
+        super().__init__(request, *args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+        self.fields['is_private'].widget = forms.CheckboxInput()
 
-class PaymentForm(forms.ModelForm):
-    class Meta:
-        model = Payment
-        fields = '__all__'
+
+# class PaymentForm(forms.ModelForm):
+#     class Meta:
+#         model = Payment
+#         fields = '__all__'

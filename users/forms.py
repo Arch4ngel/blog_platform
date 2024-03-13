@@ -28,6 +28,12 @@ class UserRegisterForm(UserCreationForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
+    def clean_phone(self):
+        cleaned_data = self.cleaned_data.get('phone')
+        if not cleaned_data[0] == '7' or len(cleaned_data) != 11:
+            raise ValidationError("Введите корректный номер!")
+        return cleaned_data
+
 
 class UserProfileForm(UserChangeForm):
     class Meta:
