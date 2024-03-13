@@ -5,8 +5,7 @@ FROM python:3.12
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup app
-RUN useradd -g app app
+RUN addgroup --system app && adduser --system --group app
 
 # create the appropriate directories
 ENV HOME=/home/app
@@ -36,9 +35,9 @@ COPY pyproject.toml .
 RUN poetry install
 
 # copy entrypoint.sh
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
-RUN chmod +x /usr/src/app/entrypoint.sh
+COPY ./entrypoint.prod.sh .
+RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.sh
+RUN chmod +x  $APP_HOME/entrypoint.sh
 
 # copy project
 COPY . $APP_HOME
