@@ -31,7 +31,11 @@ services:
       - .:/code
       - ./static:/code/static
       - ./media:/code/media
-    command: "gunicorn -c gunicorn.py config.wsgi"
+    command: >
+      sh -c "sleep 3 &&  python manage.py makemigrations 
+      && python manage.py migrate 
+      && python manage.py runserver 0.0.0.0:8000"
+#    command: "gunicorn -c gunicorn.py config.wsgi"
     expose:
       - 8000
     ports:
@@ -40,19 +44,19 @@ services:
       db:
         condition: service_healthy
 
-  nginx:
-    image: nginx:latest
-    restart: always
-    container_name: nginx
-    volumes:
-      - ./static:/code/static
-      - ./media:/code/media
-      - ./nginx:/etc/nginx/conf.d
-    expose:
-      - 8080
-    ports:
-      - "80:8080"
-    depends_on:
-      - app
-volumes:
-  pg_data:
+#  nginx:
+#    image: nginx:latest
+#    restart: always
+#    container_name: nginx
+#    volumes:
+#      - ./static:/code/static
+#      - ./media:/code/media
+#      - ./nginx:/etc/nginx/conf.d
+#    expose:
+#      - 8080
+#    ports:
+#      - "80:8080"
+#    depends_on:
+#      - app
+#volumes:
+#  pg_data:
