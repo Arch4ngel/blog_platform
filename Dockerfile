@@ -49,6 +49,7 @@ RUN chown -R app:app $APP_HOME
 USER app
 
 # run entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 #CMD ["python", "manage.py", "migrate"]
