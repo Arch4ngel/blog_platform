@@ -63,7 +63,7 @@ class VerificationErrorTemplateView(VerificationTemplateView):
 
 
 class ForgotPasswordFormView(FormView):
-    """Представление сброса парля"""
+    """Представление сброса пароля"""
     template_name = 'users/password_recovery.html'
     form_class = NewpasswordForm
     success_url = reverse_lazy('users:login')
