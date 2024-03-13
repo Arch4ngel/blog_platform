@@ -45,8 +45,8 @@ services:
     restart: always
     container_name: nginx
     volumes:
-      - ./static:/static
-      - ./media:/media
+      - ./static:/code/static
+      - ./media:/code/media
       - ./nginx:/etc/nginx/conf.d
     expose:
       - 8080
