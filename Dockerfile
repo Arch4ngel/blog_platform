@@ -17,9 +17,6 @@ COPY poetry.lock .
 COPY pyproject.toml .
 RUN poetry install
 
-RUN mkdir ./staticfiles
-RUN mkdir ./mediafiles
-
 COPY . /code
 
 WORKDIR /code
