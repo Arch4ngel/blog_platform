@@ -30,7 +30,7 @@ class RegisterView(CreateView):
 class ProfileView(UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy('blog:blog')
     extra_context = {'title': 'Профиль'}
 
     def get_object(self, queryset=None):
