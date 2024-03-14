@@ -42,10 +42,11 @@ RUN chmod +x  $APP_HOME/entrypoint.sh
 # copy project
 COPY . $APP_HOME
 
-RUN python manage.py collectstatic --noinput
+RUN #python manage.py collectstatic --noinput
 
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
+RUN chmod -R +x  $APP_HOME
 
 # change to the app user
 USER app
