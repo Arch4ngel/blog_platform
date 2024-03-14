@@ -49,8 +49,8 @@ services:
       - 80
     ports:
       - "80:80"
-#    depends_on:
-#      - web
+    depends_on:
+      - web
 volumes:
   pg_data:
   static_volume:
