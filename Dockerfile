@@ -48,8 +48,8 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
+RUN mkdir -p $APP_HOME/staticfiles
+RUN mkdir -p $APP_HOME/mediafiles
 
 # run entrypoint.sh
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
