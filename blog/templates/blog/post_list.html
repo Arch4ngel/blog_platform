@@ -34,7 +34,7 @@
                 <img class="img-fluid" src="/{% mediapath object.image %}" alt='Some image'/>
             </div>
         </div>
-        <div class="row mx-1 mb-1">
+        <div class="row mx-1 mt-1 mb-1">
             <div class="col-md-6 mb-1">
               <a href="{% url 'blog:view' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
               {% if request.user == object.user or user.is_staff %}
