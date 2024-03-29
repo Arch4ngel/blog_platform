@@ -56,7 +56,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         self.object = super().get_object(queryset)
         if self.object.is_private and not self.request.user.is_subscribed:
             return Http404("Для просмотра данного поста необходима подписка")
-        return self.object
+        else:
+            return self.object
 
     # def dispatch(self, request, *args, **kwargs):
     #     obj = self.get_object()
