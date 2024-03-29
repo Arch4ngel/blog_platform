@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -51,12 +51,16 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         context['title'] = post.title
         return context
 
-    def get_object(self, queryset=None):
+    def dispatch(self, request, *args, **kwargs):
         """Проверка наличия подписки для платного поста"""
-        self.object = super().get_object(queryset)
-        if self.object.is_private and not self.request.user.is_subscribed:
-            return redirect('blog:subscription')
-        return self.object
+        obj = self.get_object()
+        if obj.is_private and not request.user.is_subscribed:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+    def handle_no_permission(self):
+        redirect_url = reverse_lazy('blog:subscription')
+        return HttpResponseRedirect(redirect_url)
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
