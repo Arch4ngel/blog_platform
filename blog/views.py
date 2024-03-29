@@ -55,7 +55,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         """Проверка наличия подписки для платного поста"""
         self.object = super().get_object(queryset)
         if self.object.is_private and not self.request.user.is_subscribed:
-            raise Http404("Для просмотра данного поста необходима подписка")
+            return Http404("Для просмотра данного поста необходима подписка")
         return self.object
 
     # def dispatch(self, request, *args, **kwargs):
