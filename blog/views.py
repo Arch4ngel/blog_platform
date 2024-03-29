@@ -54,7 +54,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         """Проверка наличия подписки для платного поста"""
         obj = self.get_object()
-        if obj.is_private and not request.user.is_subscribed:
+        if obj.is_private and not request.user.is_subscribed and not request.user.is_staff and request.user != obj.user:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
